@@ -1,0 +1,40 @@
+Weather program that displays current weather, hourly weather, and weather in to the next week.
+Get information from websites using curl.
+Display information using ncurses.
+Draw icons using ASCII and colours in ncurses.
+
+DrawMain.h
+	- Draws the main window, draws borders and calls other draw commands/queries
+	- Displays and formats information
+	- Can be interacted with to change how information is displayed
+
+DrawIcons.h
+	- Contains the functions to draw colored ASCII images
+	- Draw the following for main image and for the week (main larger than week images)
+		- Sunny
+		- Light clouds
+		- Cloudy
+		- Windy?
+		- Light rain
+		- Heavy rain
+		- Snow
+		- Thunder storm
+
+GetInfo.h
+	- Get information from websites and APIs
+		- Each one will have a parser to transform information into a certain form
+	- Will be done later, for now have generic (fake) info
+
+Parse.h
+	- Parse information from GetInfo.h
+
+Main
+	- Default initialization and calls DrawMain.h
+	- Deals with optional command line calls (just output to cl current temp, etc.)
+
+Input.h
+	- Handle user input, communicates with DrawMain.h to change information display
+	- Examples:
+		- Celsius and Farenheit conversion
+		- KMPH and MPH wind conversion
+		- Quit

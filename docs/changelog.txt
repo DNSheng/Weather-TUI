@@ -1,0 +1,8 @@
+April 03, 2017
+
+	- First commit
+	- Creates a window, and allows for extremely simple keybinds
+	- Started building input handling and parsing for commands
+	- 'Model' yet to be started
+	- Planning/roadwork for view started
+	- Need to better define scope of project
