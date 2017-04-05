@@ -1,3 +1,16 @@
+April 05, 2017
+	- Clean up Makefile, it will eventually get too messy
+		- Move Makefile out of src/ folder
+		- Create executable out of src/ folder
+	- Moved drawing of icons out of draw_main to draw_images
+	- Fixed input command handling
+		- Now works
+	- Now the program draws a solid border
+		- Need to make it not interfere with the commands and images
+	- 'draw' command makes a gap in the border... Don't know why
+	- Consider simplifying the program to only display right now, updating hourly
+		- Commands may not be needed?
+
 April 04, 2017
 	- Rebuilt loop from window drawing to input handling
 		- No more recursive calls for cleanliness and memory
@@ -6,8 +19,10 @@ April 04, 2017
 	- Started work on colors and drawing
 		- Finished sun and cloud
 		- Need to init more colors
-			- Blue
 			- Colors for numbers (temp, wind, etc.)
+
+	- Match command doesn't work anymore - important to fix this
+	- Move drawing functions from draw_main to draw_images
 
 April 03, 2017
 

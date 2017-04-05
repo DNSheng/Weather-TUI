@@ -3,6 +3,7 @@
 
 #include "locale.h"
 #include "draw_main.h"
+#include "draw_images.h"
 #include "input_handler.h"
 #include "weather_model.h"
 
@@ -24,30 +25,21 @@ void initialize_main()
 	start_color();
 	initialize_colors();
 
+	/* Draw a box */
+	box(stdscr, ACS_VLINE, ACS_HLINE);
 	/* Testing draw functions */
-	int x, y;
-	getyx(stdscr, y, x);
-	xydraw_sunny(0, y+2);
-	getyx(stdscr, y, x);
-	xydraw_cloudy(0, y+2);
-	getyx(stdscr, y, x);
-	xydraw_drizzle(0, y+2);
-	getyx(stdscr, y, x);
-	xydraw_partly_cloudy(0, y+2);
-	getyx(stdscr, y, x);
-	xydraw_rain(0, y+2);
-	refresh_main();
+	refresh();
 	/* End of debug functions */
 	
 	for(;;)
 	{
 		/* Hide cursor and keypresses to screen */
-		cbreak();
+		cbreak();	/* What does this do again? */
 		noecho();
 		curs_set(0);
 		/* Get input to update model and refresh */
 		main_screen_input();
-		refresh_main();
+		refresh();
 	}
 }
 
@@ -67,6 +59,21 @@ void initialize_colors()
 void refresh_main()
 {
 	/* Run various draw routines, then refresh the window*/
+	erase();
+	box(stdscr, ACS_VLINE, ACS_HLINE);
+	int x, y;
+	getyx(stdscr, y, x);
+	xydraw_sunny(3, y+2);
+	getyx(stdscr, y, x);
+	xydraw_cloudy(3, y+2);
+	getyx(stdscr, y, x);
+	xydraw_drizzle(3, y+2);
+	getyx(stdscr, y, x);
+	xydraw_partly_cloudy(3, y+2);
+	getyx(stdscr, y, x);
+	xydraw_rain(3, y+2);
+	getyx(stdscr, y, x);
+	xydraw_heavy_rain(3, y+2);
 	refresh();
 }
 
@@ -86,117 +93,4 @@ void quit()
 {
 	endwin();
 	exit(0);
-}
-
-/*===============================================================
- * Drawing stuff
- * ==============================================================
- */
-
-/*
- * Given top left x and y coords, draw an ASCII sunny weather icon
- */
-void xydraw_sunny(int x, int y)
-{
-	attron(COLOR_PAIR(SUNNY_YELLOW));
-	mvprintw(y+1, x+4, ".-.");
-	mvprintw(y+2, x+3, "(   )");
-	mvprintw(y+3, x+4, "`-’");
-
-	attron(A_BLINK);
-	mvprintw(y, x+3, "\\   /");
-	mvprintw(y+2, x, "――");
-	mvprintw(y+2, x+9, "――");
-	mvprintw(y+4, x+3, "/   \\");
-	attroff(A_BLINK);
-
-	attroff(COLOR_PAIR(SUNNY_YELLOW));
-}
-
-/*
- * Given top left x and y coords, draw an ASCII cloud covering sun
- */
-void xydraw_partly_cloudy(int x, int y)
-{
-	/* Draw the sun */
-	attron(COLOR_PAIR(SUNNY_YELLOW));
-	attron(A_BLINK);
-	mvprintw(y, x+2, "\\  /");
-	mvprintw(y+1, x, "_");
-	mvprintw(y+3, x+2, "/");
-	attroff(A_BLINK);
-	mvprintw(y+1, x+2, "/\"\"");
-	mvprintw(y+2, x+2, "\\_");
-	attroff(COLOR_PAIR(SUNNY_YELLOW));
-	
-	/* Draw the cloud */
-	attron(COLOR_PAIR(CLOUDY_GREY));
-	mvprintw(y+1, x+6, ".-.");
-	mvprintw(y+2, x+5, "(   ).");
-	mvprintw(y+3, x+4, "(___(__)");
-	attroff(COLOR_PAIR(CLOUDY_GREY));
-}
-
-/*
- * Given top left x and y coords, draw an ASCII cloud
- */
-void xydraw_cloudy(int x, int y)
-{
-	attron(COLOR_PAIR(CLOUDY_GREY));
-	mvprintw(y, x+4, ".--.");
-	mvprintw(y+1, x+1, ".-(    ).");
-	mvprintw(y+2, x, "(___.__)__)");
-	attroff(COLOR_PAIR(CLOUDY_GREY));
-}
-
-/*
- * Given top left x and y coords, draw an ASCII sunny drizzle
- */
-void xydraw_drizzle(int x, int y)
-{
-	/* Draw the sun */
-	attron(COLOR_PAIR(SUNNY_YELLOW));
-	attron(A_BLINK);
-	mvprintw(y, x, "_`");
-	mvprintw(y, x+3, "\"\"");
-	mvprintw(y+1, x+1, ",");
-	mvprintw(y+2, x+2, "/");
-	attroff(A_BLINK);
-	mvprintw(y, x+2, "/");
-	mvprintw(y+1, x+2, "\\_");
-	attroff(COLOR_PAIR(SUNNY_YELLOW));
-	
-	/* Draw the cloud */
-	attron(COLOR_PAIR(CLOUDY_GREY));
-	mvprintw(y, x+5, ".-.");
-	mvprintw(y+1, x+4, "(   ).");
-	mvprintw(y+2, x+3, "(___(__)");
-	attroff(COLOR_PAIR(CLOUDY_GREY));
-	
-	/* Draw raindrops */
-	attron(COLOR_PAIR(RAINY_BLUE));
-	attron(A_BLINK);
-	mvprintw(y+3, x+3, "` ` ` ` `");
-	mvprintw(y+4, x+4, "` ` ` ` `");
-	attroff(A_BLINK);
-	attroff(COLOR_PAIR(RAINY_BLUE));
-}
-
-/*
- * Given top left x and y coords, draw an ASCII cloud
- */
-void xydraw_rain(int x, int y)
-{
-	/* Draw the cloud */
-	attron(COLOR_PAIR(CLOUDY_GREY));
-	mvprintw(y, x+4, ".--.");
-	mvprintw(y+1, x+1, ".-(    ).");
-	mvprintw(y+2, x, "(___.__)__)");
-	attroff(COLOR_PAIR(CLOUDY_GREY));
-	
-	/* Draw the rain */
-	attron(COLOR_PAIR(RAINY_BLUE));
-	mvprintw(y+3, x, "` ` ` ` ` `");
-	mvprintw(y+4, x, "` ` ` ` ` `");
-	attroff(COLOR_PAIR(RAINY_BLUE));
 }

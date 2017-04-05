@@ -44,7 +44,6 @@ void main_screen_input()
  * Get a user command in the form of a string
  * Parse string for command and associated arguments
  * Modify model with user input
- * Return to main window for next round of user input
  * Currently writes command to window for debugging purposes
  */
 void get_command()
@@ -61,6 +60,7 @@ void get_command()
 
 	/* Move to botton of screen */
 	wmove(stdscr, y_size-1, 0);
+	clrtoeol();
 	printw(":");
 
 	/* Show input and cursor */
@@ -78,7 +78,7 @@ void get_command()
 
 	/* Go back to previous location and print command (DEBUG)*/
 	wmove(stdscr, current_y+1, 0);
-	printw("%s", command_str);
+	//printw("%s", command_str);
 }
 
 /*
@@ -88,10 +88,14 @@ void get_command()
  */
 void parse_command(char a_command[256])
 {
-	int i;
+	int i, x, y;
 	if (match_command(a_command, "set")) {
 		//Call the set command from the model
 		match_argument(a_command);
+	} else if (match_command(a_command, "draw")) {
+		refresh_main();
+	} else if (match_command(a_command, "clear")) {
+		erase();
 	} else if (match_command(a_command, "view")) {
 		/* Change the view to:
 		 * 	- Simple
@@ -109,24 +113,33 @@ void parse_command(char a_command[256])
 		i++;
 	} else {
 		//Command not found, print in red text and show for few secs, delete
+		printw("Command not recognized...");
 		i++;
 	}
 }
 
 /*
- * Return 1 if the user input had the prog_command in the beginning
+ * Return 1 if the user input called prog_command
  * Return 0 otherwise (command not called)
  */
 int match_command(char a_command[], const char* prog_command)
 {
+	size_t a_size= strlen(a_command);
 	size_t size = strlen(prog_command);
 	char *command = (char *) malloc(size);
 
-	strncpy(command, a_command, size);
-
-	if(strcmp(command, prog_command) == 0) return 1;
-	
-	return 0;
+	if (a_size == size)
+	{
+		/* Copy string and add escape char */
+		strncpy(command, a_command, size);
+		command[size] = '\0';
+		if (strcmp(command, prog_command) == 0)
+			return 1;
+	}
+	else
+	{
+		return 0;
+	}
 	free(command);
 }
 

@@ -41,30 +41,6 @@ void draw_hourly();
 void draw_day();
 void draw_week();
 
-/*
- * Implicit drawing, draws with current cursor as top left corner
- */
-void draw_sunny();
-void draw_party_cloudy();
-void draw_cloudy();
-void draw_drizzle();
-void draw_rain();
-void draw_snow();
-void draw_thunder();
-void draw_fog();
-
-/*
- * Drawing window details, coords represent top left corner
- */
-void xydraw_sunny(int x, int y);
-void xydraw_partly_cloudy(int x, int y);
-void xydraw_cloudy(int x, int y);
-void xydraw_drizzle(int x, int y);
-void xydraw_rain(int x, int y);
-void xydraw_snow(int x, int y);
-void xydraw_thunder(int x, int y);
-void xydraw_fog(int x, int y);
-
 /*=================================================================
  * PRINTING
  *=================================================================

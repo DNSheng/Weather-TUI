@@ -1,3 +1,8 @@
+April 05, 2017
+	- Fixed input command handling
+	- Refactored drawing commands
+	- Draws a window border
+
 April 04, 2017
 	- Rebulit program for cleanliness and reduced memory usage
 	- Fixed compilation error
