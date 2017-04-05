@@ -2,8 +2,9 @@
 #include <ncurses.h>
 #include <string.h>
 
-#include "input_handler.h"
 #include "draw_main.h"
+#include "input_handler.h"
+#include "weather_model.h"
 
 /*
  * Get keypresses in main window where:
@@ -12,6 +13,7 @@
  * 	- 'c'		Changes to celsius
  * 	- 'f'		Changes to farenheit
  * 	- other		Does nothing
+ * Once finished, routine exits back to draw_main_window();
  */
 void main_screen_input()
 {
@@ -21,28 +23,28 @@ void main_screen_input()
 			// ':' pressed
 			get_command();
 			break;
+		case 81:
+			// 'Q' pressed
+			quit();
 		case 113:
 			// 'q' pressed
-			endwin();
-			exit(0);
-			break;
+			quit();
 		case 99:
 			// 'c' pressed for celsius
-			draw_main_window();
 			break;
 		case 102:
 			// 'f' pressed for farenheit
-			draw_main_window();
 			break;
-		default:	
-			draw_main_window();
+		default:
+			break;
 	}
-	/* Once input received and model updated, go to main window and refresh */
-	draw_main_window();
 }
 
 /*
  * Get a user command in the form of a string
+ * Parse string for command and associated arguments
+ * Modify model with user input
+ * Return to main window for next round of user input
  * Currently writes command to window for debugging purposes
  */
 void get_command()
@@ -87,13 +89,22 @@ void get_command()
 void parse_command(char a_command[256])
 {
 	int i;
-	if (match_command(a_command, SET_COMMAND)) {
+	if (match_command(a_command, "set")) {
 		//Call the set command from the model
 		match_argument(a_command);
-	} else if (match_command(a_command, QUIT_COMMAND)) {
-		//Call quit command from the model
-		i++;
-	} else if (match_command(a_command, HELP_COMMAND)) {
+	} else if (match_command(a_command, "view")) {
+		/* Change the view to:
+		 * 	- Simple
+		 * 	- Today
+		 * 	- Hourly
+		 * 	- Week
+		 */
+		match_argument(a_command);
+	} else if (match_command(a_command, "quit")) {
+		quit();
+	} else if (match_command(a_command, "q")) {
+		quit();
+	} else if (match_command(a_command, "help")) {
 		//Call help command from the model
 		i++;
 	} else {
@@ -103,8 +114,8 @@ void parse_command(char a_command[256])
 }
 
 /*
- * Return 1 if the user input called such a command
- * Return 0 otherwise
+ * Return 1 if the user input had the prog_command in the beginning
+ * Return 0 otherwise (command not called)
  */
 int match_command(char a_command[], const char* prog_command)
 {
@@ -116,6 +127,7 @@ int match_command(char a_command[], const char* prog_command)
 	if(strcmp(command, prog_command) == 0) return 1;
 	
 	return 0;
+	free(command);
 }
 
 /*

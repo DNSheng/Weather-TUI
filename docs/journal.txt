@@ -1,0 +1,19 @@
+April 04, 2017
+	- Rebuilt loop from window drawing to input handling
+		- No more recursive calls for cleanliness and memory
+	- Removed constants due to compilation errors
+	- Started work on model
+	- Started work on colors and drawing
+		- Finished sun and cloud
+		- Need to init more colors
+			- Blue
+			- Colors for numbers (temp, wind, etc.)
+
+April 03, 2017
+
+	- First commit
+	- Creates a window, and allows for extremely simple keybinds
+	- Started building input handling and parsing for commands
+	- 'Model' yet to be started
+	- Planning/roadwork for view started
+	- Need to better define scope of project

@@ -1,8 +1,11 @@
+April 04, 2017
+	- Rebulit program for cleanliness and reduced memory usage
+	- Fixed compilation error
+	- Built a few weather printing functions
+
 April 03, 2017
 
 	- First commit
-	- Creates a window, and allows for extremely simple keybinds
+		- Creates a window, and allows for extremely simple keybinds
+		and commands
 	- Started building input handling and parsing for commands
-	- 'Model' yet to be started
-	- Planning/roadwork for view started
-	- Need to better define scope of project
